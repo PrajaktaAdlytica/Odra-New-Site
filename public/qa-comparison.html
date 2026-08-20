@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odra Portal Prototype QA Comparison</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 28px; background: #1d1b26; color: #fff; font-family: Inter, Arial, sans-serif; }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      p { margin: 0 0 24px; color: #bdb8c8; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      figure { margin: 0; background: #282532; border: 1px solid #454050; border-radius: 16px; overflow: hidden; }
+      img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; background: #f8f3ed; }
+      figcaption { padding: 14px 16px; color: #ddd8e6; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <h1>Odra portal direction — visual QA</h1>
+    <p>Source storyboard compared with the implemented full-screen Entry state at 1440 × 900.</p>
+    <div class="grid">
+      <figure><img src="/qa-source-full.png" alt="Source storyboard entry direction" /><figcaption>Source direction — top Entry chapter</figcaption></figure>
+      <figure><img src="/qa-entry-final.jpg" alt="Implemented 3D entry state" /><figcaption>Implementation — real-time 3D Entry state</figcaption></figure>
+    </div>
+  </body>
+</html>

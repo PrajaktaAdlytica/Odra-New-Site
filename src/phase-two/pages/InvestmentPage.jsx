@@ -1,0 +1,15 @@
+import { PageHero, SectionHeading } from "../../components/PagePrimitives";
+import { SiteIcon } from "../../components/SiteChrome";
+import { decisionSteps, engagementPathways, investmentPrinciples } from "../../data/investment";
+import { portfolioCompanies } from "../../data/portfolio";
+
+export default function InvestmentPage() {
+  return <>
+    <PageHero number="01" eyebrow="Investment approach" title="Built for founders going further." body="We work with ambitious technology founders building for meaningful markets and long-term relevance. Applications are welcome globally." image="/assets/odra-architectural-hero.webp" actions={[{ label: "Explore our focus", href: "/investment/focus" }, { label: "Start an application", href: "/apply" }]} />
+    <section className="phase-section beliefs-section"><SectionHeading eyebrow="What we believe" title="Conviction with a clear point of view." body="Four principles shape how Odra understands founders, technology, evidence, and active partnership." /><div className="principle-grid">{investmentPrinciples.map((principle) => <article key={principle.number}><span>{principle.number}</span><h3>{principle.title}</h3><p>{principle.body}</p></article>)}</div></section>
+    <section className="phase-section pathway-section"><SectionHeading eyebrow="Where we engage" title="One ambition. Different starting points." body="Choose the learning, acceleration, scale, or investment route closest to the company’s work today." /><div className="pathway-list">{engagementPathways.map((pathway) => <article className={`pathway-card motion-card ${pathway.title === "Investment interest" ? "is-investment" : ""}`} tabIndex="0" key={pathway.title}><div><span>{pathway.status}</span><h3>{pathway.title}</h3></div><p>{pathway.body}</p><SiteIcon name="arrow-right" /></article>)}</div></section>
+    <section className="phase-section decision-section"><SectionHeading eyebrow="How we decide" title="A deliberate path from first signal to partnership." /><div className="decision-track">{decisionSteps.map((step) => <article className="decision-step motion-card" tabIndex="0" key={step.number}><span>{step.number}</span><h3>{step.title}</h3><p>{step.body}</p></article>)}</div></section>
+    <section className="phase-section selected-companies"><SectionHeading eyebrow="The work in the world" title="Technology companies in focus." body="Explore the products, markets, and company stories across the Odra roster." /><div className="company-wordmark-row">{portfolioCompanies.slice(0, 6).map((company) => <a href={`/portfolio/${company.slug}`} key={company.slug}>{company.name}<span>↗</span></a>)}</div><a className="phase-text-link" href="/portfolio">Explore all companies <SiteIcon name="arrow-right" /></a></section>
+    <section className="phase-closing"><div><p className="kicker">Start the conversation</p><h2>If the ambition is real,<br />find the right route.</h2></div><a className="primary-action" href="/apply">Apply to Odra <SiteIcon name="arrow-right" /></a></section>
+  </>;
+}
