@@ -74,6 +74,22 @@ function useCinematicShell() {
     gsap.utils.toArray(root.querySelectorAll(".motion-card")).forEach((element, index) => {
       animations.push(gsap.fromTo(element, { autoAlpha: 0, y: 32 + (index % 3) * 12 }, { autoAlpha: 1, y: 0, duration: .72, delay: (index % 3) * .055, ease: "power2.out", scrollTrigger: { trigger: element, start: "top 88%", once: true } }));
     });
+    if (!reducedMotion) {
+      gsap.utils.toArray(root.querySelectorAll(".sequential-list")).forEach((list) => {
+        const rows = [...list.children];
+        animations.push(gsap.fromTo(rows,
+          { autoAlpha: 0, x: -34 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: .68,
+            stagger: .18,
+            ease: "power3.out",
+            scrollTrigger: { trigger: list, start: "top 82%", once: true },
+          },
+        ));
+      });
+    }
     const activateChapter = (section, sceneIndex, localProgress = 0) => {
       const index = sections.indexOf(section);
       const sceneTotal = Math.max(1, cameraSections.length);
@@ -143,7 +159,7 @@ export function SiteHeader() {
         {primaryNavigation.map((route) => (
           <a className={isActiveRoute(currentPath, route) ? "active" : ""} href={route.path} key={route.path}>{route.label}</a>
         ))}
-        <a className={`school-nav-link ${currentPath.startsWith("/school") || currentPath.startsWith("/programs/ov-school") ? "active" : ""}`} href="/programs/ov-school"><span>OV</span> School</a>
+        <a className={`school-nav-link ${currentPath.startsWith("/school") || currentPath.startsWith("/programs/ov-school") ? "active" : ""}`} href="/programs/ov-school">OV School</a>
       </nav>
       <div className="header-actions">
         <a className="apply-button" href="/apply">Apply <span aria-hidden="true">↗</span></a>
@@ -177,7 +193,6 @@ export function SiteShell({ children }) {
     <CinematicBackdrop progress={cameraProgress} sceneCount={chapter.cameraTotal} />
     <div className="route-curtain" aria-hidden="true"><span>Odra Venture</span></div>
     <SiteHeader />
-    <aside className="camera-orientation" aria-hidden="true"><span>{String(chapter.current).padStart(2, "0")} / {String(chapter.total).padStart(2, "0")}</span><i /><strong>{chapter.label}</strong></aside>
     <div id="main-content">{children}</div>
     <SiteFooter />
   </main>;
