@@ -120,25 +120,9 @@ function useCinematicShell() {
   }, []);
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return undefined;
     document.documentElement.classList.add("route-arriving");
     const arrival = window.setTimeout(() => document.documentElement.classList.remove("route-arriving"), 700);
-    const navigate = (event) => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      const anchor = event.target.closest("a[href]");
-      if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
-      const href = anchor.getAttribute("href");
-      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
-      const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin || url.pathname === window.location.pathname && url.search === window.location.search) return;
-      event.preventDefault();
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { window.location.assign(url.href); return; }
-      document.documentElement.classList.add("route-leaving");
-      window.setTimeout(() => window.location.assign(url.href), 460);
-    };
-    root.addEventListener("click", navigate);
-    return () => { window.clearTimeout(arrival); root.removeEventListener("click", navigate); document.documentElement.classList.remove("route-arriving", "route-leaving"); };
+    return () => { window.clearTimeout(arrival); document.documentElement.classList.remove("route-arriving", "route-leaving"); };
   }, []);
 
   return { rootRef, cameraProgress, chapter };

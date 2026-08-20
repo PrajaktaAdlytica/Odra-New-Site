@@ -778,9 +778,47 @@ function useSmoothMotion({ homepage }) {
 export function App() {
   const progress = useRef(0);
   const [webglFailed, setWebglFailed] = useState(false);
-  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  const [path, setPath] = useState(() => window.location.pathname.replace(/\/+$/, "") || "/");
   const homepage = path === "/";
   useSmoothMotion({ homepage });
+
+  useEffect(() => {
+    let navigationTimer;
+    const readPath = () => window.location.pathname.replace(/\/+$/, "") || "/";
+    const syncFromHistory = () => setPath(readPath());
+    const navigate = (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const anchor = event.target.closest("a[href]");
+      if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+      const href = anchor.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+      const url = new URL(anchor.href, window.location.href);
+      if (url.origin !== window.location.origin || url.pathname === window.location.pathname && url.search === window.location.search) return;
+      event.preventDefault();
+      const completeNavigation = () => {
+        window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+        setPath(readPath());
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.classList.remove("route-leaving");
+        document.documentElement.classList.add("route-arriving");
+        window.setTimeout(() => document.documentElement.classList.remove("route-arriving"), 650);
+      };
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        completeNavigation();
+        return;
+      }
+      document.documentElement.classList.add("route-leaving");
+      window.clearTimeout(navigationTimer);
+      navigationTimer = window.setTimeout(completeNavigation, 420);
+    };
+    document.addEventListener("click", navigate);
+    window.addEventListener("popstate", syncFromHistory);
+    return () => {
+      window.clearTimeout(navigationTimer);
+      document.removeEventListener("click", navigate);
+      window.removeEventListener("popstate", syncFromHistory);
+    };
+  }, []);
 
   useEffect(() => {
     if (!homepage) return undefined;
