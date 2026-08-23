@@ -12,7 +12,7 @@ const sharedPendingFields = {
 };
 
 const approvedRedesignCompanies = [
-  { name: "Agrento", slug: "agrento", website: "https://agrento-site.vercel.app", tone: "mint" },
+  { name: "Agrento", slug: "agrento", website: "https://www.agrento.com", tone: "mint" },
   { name: "Roviaza", slug: "roviaza", website: "https://www.roviaza.com", tone: "lavender" },
   { name: "Railixa", slug: "railixa", website: "https://www.railixa.com", tone: "blue" },
   { name: "Ledgerza", slug: "ledgerza", website: "https://www.ledgerza.com", tone: "yellow" },
